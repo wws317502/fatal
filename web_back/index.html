@@ -17,8 +17,8 @@
     <div class="sider">
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
-            <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <img src="images/2.jpg" alt="person" class='userImg'>
+            <span>欢迎&nbsp;&nbsp;<i id="userName" style="font-style: normal;">李思思<i></span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -43,8 +43,8 @@
         </form>
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
-            <img src="images/2.jpg" alt="person">
-            <a href="#"><i class="iconfont icon-tuichu"></i> 退出</a>
+            <img src="images/2.jpg" alt="person" class='userImg'>
+            <a href="#" id="dropOut"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
 
@@ -111,6 +111,34 @@
 
 <script src="./js/jquery-1.12.4.min.js"></script>
 <script>
+    // $('#dropOut').click(function() {
+    //         location.href = './login.html';
+    //     })
+    // 用户退出
+    $('#dropOut').click(function() {
+            // $.post(地址，参数，回调)
+
+            $.post('http://127.0.0.1:8000/admin/logout', function(res) {
+                if (res.code === 200) {
+                    // 退出, 回到登陆页
+                    location.href = "./login.html"
+                }
+            })
+
+        })
+        //   
+        // nicknamestring用户昵称user_picstring用户图片地址
+    $.get('http://127.0.0.1:8000/admin/getuser', {
+
+    }, function(res) {
+        console.log(res);
+        if (res.code === 200) {
+            $(".userImg").prop('src', res.data.user_pic);
+            $('#userName').text(res.data.nickname);
+
+            console.log(res);
+        }
+    })
 </script>
 
 </html>

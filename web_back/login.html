@@ -56,21 +56,18 @@
 </body>
 <script src="./js/jquery-1.12.4.min.js"></script>
 <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script src="./Package.js"></script>
 <script>
     $('#btn').click(function() {
-
         var myName = $("#myName").val().trim();
         var myPassword = $('#myPassword').val().trim();
-        $.post('http://127.0.0.1:8000/admin/login', {
-            "user_name": myName,
-            "password": myPassword
+        if (myName === '' || myPassword === "") {
+            $('#content').html('Can not be empt&hellip;')
+            $('#myModal').modal('show');
+            return;
+        }
 
-        }, function(res) {
-            if (myName === '' || myPassword === "") {
-                $('#content').html('Can not be empt&hellip;')
-                $('#myModal').modal('show');
-                return;
-            }
+        Package.parameter1(myName, myPassword, function(res) {
             if (res.msg === "登录成功") {
                 location.href = './index.html'
             } else {
@@ -79,6 +76,7 @@
                 return;
             }
         })
+
     })
 </script>
 

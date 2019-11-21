@@ -110,6 +110,7 @@
 
 
 <script src="./js/jquery-1.12.4.min.js"></script>
+<script src="./address.js"></script>
 <script src="./Package.js"></script>
 <script>
     // $('#dropOut').click(function() {
@@ -118,7 +119,7 @@
     // 用户退出
     $('#dropOut').click(function() {
             // $.post(地址，参数，回调)
-            Package.parameter2(function(res) {
+            Package.parameterOut(function(res) {
                 if (res.code === 200) {
                     // 退出, 回到登陆页
                     location.href = "./login.html"
@@ -129,7 +130,7 @@
         //   
         // nicknamestring用户昵称user_picstring用户图片地址
 
-    Package.parameter2(function(res) {
+    Package.parameterInfo(function(res) {
         if (res.code === 200) {
             $(".userImg").prop('src', res.data.user_pic);
             $('#userName').text(res.data.nickname);

@@ -68,7 +68,7 @@
             return;
         }
 
-        Package.parameterIn(myName, myPassword, function(res) {
+        Package.In(myName, myPassword, function(res) {
             if (res.msg === "登录成功") {
                 location.href = './index.html'
             } else {

@@ -119,7 +119,7 @@
     // 用户退出
     $('#dropOut').click(function() {
             // $.post(地址，参数，回调)
-            Package.parameterOut(function(res) {
+            Package.Out(function(res) {
                 if (res.code === 200) {
                     // 退出, 回到登陆页
                     location.href = "./login.html"
@@ -130,7 +130,7 @@
         //   
         // nicknamestring用户昵称user_picstring用户图片地址
 
-    Package.parameterInfo(function(res) {
+    Package.Info(function(res) {
         if (res.code === 200) {
             $(".userImg").prop('src', res.data.user_pic);
             $('#userName').text(res.data.nickname);

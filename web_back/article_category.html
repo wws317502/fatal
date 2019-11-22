@@ -28,17 +28,17 @@
                         <th class="text-center" width="100">操作</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="textTop">
 
 
-                    <tr>
+                    <!-- <tr>
                         <td>爱旅行</td>
                         <td>travel</td>
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;4&quot;,&quot;slug&quot;:&quot;travel&quot;,&quot;name&quot;:&quot;爱旅行&quot;});" class="btn btn-info btn-xs">编辑</a>
                             <a href="javascript:deleteTr( 4 );" class="btn btn-danger btn-xs">删除</a>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
                 <tfoot>
                     <tr>
@@ -79,11 +79,6 @@
     </div>
 
     <script>
-        // $('#addModal').modal({
-        //     show: false,
-        //     backdrop: false
-        // });
-
         $('#model_shutoff').click(function() {
             $('#addModal').modal('hide');
         });
@@ -101,7 +96,82 @@
     </script>
     <script src="./address.js"></script>
     <script src="./Package.js"></script>
+    <script src="./js/template-web.js"></script>
+    <script type="text/html" id="art">
+        {{each data item index}}
+        <tr>
+            <td>{{item.name}} </td>
+            <td>{{item.slug}} </td>
+            <td class="text-center">
+                <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
+                <a href="javascript:;" wwsid={{item.id}} class="btn btn-danger btn-xs wws">删除</a>
+            </td>
+        </tr>
+        {{/each}}
+    </script>
+    <script>
+        //获取元素添加内容
+        // category_show: address + 'admin/category_search', //文章类别搜索
+        //     category_show: function(View) {
+        //     $.get(category_show, {
+        //         // 'id': id,
+        //         // 'name': name,
+        //         // "slug": slug
+        //     }, function(res) {
+        //         View(res)
+        //     })
+        // },
+        fn();
+
+        function fn() {
+            $.get('http://127.0.0.1:8000/admin/category_search', function(res) {
+                // console.log(res);
+                //data//(数据)
+                if (res.code == 200) {
+                    var htmlStr = template("art", res);
+                    // console.log(htmlStr);
+                    $('#textTop').html(htmlStr)
+                }
+            })
+
+        }
+
+        // del: address + 'admin/category_delete', //删除文章类别
+        //删除文章类别
+        // del: function(id, View) {
+        //     $.post(management.del, {
+        //         'id': id,
+        //         // 'name': name,
+        //         // "slug": slug
+        //     }, function(res) {
+        //         View(res)
+        //     })
+        // },
+        $('#textTop').on('click', '.wws', function() {
+                var id = $(this).attr('wwsid')
+                console.log(id);
+                $.post('http://localhost:8000/admin/category_delete', {
+                    "id": id
+                }, function(res) {
+                    if (confirm('确定要删除吗？') === false) {
+                        return;
+                    }
+                    if (res.code === 200) {
+                        fn()
+
+                    } else {
+                        alert(res.msg)
+                        return;
+                    }
+
+
+                })
+            })
+            // 添加
+    </script>
 
 </body>
+
+</html>
 
 </html>

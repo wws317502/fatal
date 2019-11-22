@@ -2,7 +2,7 @@
 var Package = {
     //parameter(参数)
     // 登录
-    parameterIn: function(myName, myPassword, View) {
+    In: function(myName, myPassword, View) {
         $.post(management.methodIn, {
             "user_name": myName,
             "password": myPassword
@@ -11,13 +11,13 @@ var Package = {
         })
     },
     //改变图片
-    parameterInfo: function(View) {
+    Info: function(View) {
         $.get(management.methodInfo, {}, function(res) {
             View(res)
         })
     },
     // 退出
-    parameterOut: function(View) {
+    Out: function(View) {
         $.post(management.methodOut, {}, function(res) {
             View(res)
         })
@@ -25,8 +25,8 @@ var Package = {
 
 
     //文章类别搜索
-    category_show: function(View) {
-        $.get(category_show, {
+    show: function(View) {
+        $.get(management.show, {
             // 'id': id,
             // 'name': name,
             // "slug": slug
@@ -35,8 +35,8 @@ var Package = {
         })
     },
     //删除文章类别
-    category_del: function(id, View) {
-        $.post(category_del, {
+    del: function(id, View) {
+        $.post(management.del, {
             'id': id,
             // 'name': name,
             // "slug": slug
@@ -45,8 +45,8 @@ var Package = {
         })
     },
     //新增文章类别
-    category_add: function(name, slug, View) {
-        $.post(category_add, {
+    add: function(name, slug, View) {
+        $.post(management.add, {
             // 'id': id,
             'name': name,
             "slug": slug
@@ -55,8 +55,8 @@ var Package = {
         })
     },
     //编辑文章类别
-    category_edit: function(id, name, slug, View) {
-        $.post(category_edit, {
+    edit: function(id, name, slug, View) {
+        $.post(management.edit, {
             'id': id,
             'name': name,
             "slug": slug

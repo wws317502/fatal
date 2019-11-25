@@ -23,29 +23,24 @@
             文章编辑
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form">
+            <form class="form-horizontal article_form" id="myform">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" value="文章标题文字">
+                        <input type="text" name="title" class="form-control" id="article_title" value="文章标题文字">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <img src="images/pic06.jpg" class="article_cover">
-                        <input type="file" id="exampleInputFile">
+                        <img src="images/pic06.jpg" class="article_cover" id="article_cover">
+                        <input type="file" name="cover" id="files">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>类别一</option>
-                            <option>类别二</option>
-                            <option>类别三</option>
-                            <option selected>类别四</option>
-                            <option>类别五</option>
+                        <select class="form-control" id="categoryContainer" name="type">
                         </select>
                     </div>
                 </div>
@@ -54,7 +49,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" value="2019-05-17" id="dateinput">
+                            <input type="text" class="form-control" name="date" value="2019-05-17" id="dateinput">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -71,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">修改</button>
+                        <button type="button" id="btnSave" class="btn btn-success">修改</button>
                     </div>
                 </div>
             </form>
@@ -79,5 +74,99 @@
     </div>
 
 </body>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script src="./Package.js"></script>
+<script src="./address.js"></script>
+<script src="js/jedate/js/jedate.js"></script>
+<script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="js/tinymce/js/tinymce_setup.js"></script>
+
+<script src="./js/template-web.js"></script>
+<script id="temp_cate" type="text/html">
+    {{each data item}}
+    <option value="{{item.id}}">{{item.name}}</option>
+    {{/each}}
+</script>
+<script>
+    // 1. 获取在地址栏中id 
+    var id = location.search.substr(4);
+
+    $('#files').change(function() {
+        var address = this.files[0] //地址
+        var temporary_address = URL.createObjectURL(address); //临时地址temporary_address
+        $('#article_cover').prop('src', temporary_address);
+    })
+
+
+    // 2. 根据 id去求接口，获取对应文章的详情
+    $.get('http://localhost:8000/admin/search', {
+            "id": id
+        },
+        function(res) {
+            // console.log(res);
+            // 当前文章所属的类别 id
+            // 3. 显示在表单元素中
+            var typeId = res.data.type
+            $('#article_title').val(res.data.title)
+            $('#article_cover').prop("src", res.data.cover)
+            $('#dateinput').val(res.data.date)
+            $('#rich_content').val(res.data.content)
+
+            // 3.1 显示文章类型
+            // 'admin/category_search', //文章类别搜索
+            $.get('http://localhost:8000/admin/category_search', {
+                // 'id': id,
+                // 'name': name,
+                // "slug": slug
+            }, function(res) {
+                var htmlStr = template('temp_cate', res)
+                $('#categoryContainer').html(htmlStr)
+                $("#categoryContainer").val(typeId)
+            })
+
+
+        }
+    )
+
+    // 4. 用户再修改，再保存
+    $('#btnSave').click(function() {
+        console.log(111121);
+
+
+        // 1. 以formData收集参数
+        var fd = new FormData(document.getElementById('myform'));
+        // 补充一个参数
+        fd.append("id", id)
+            // 单独处理富文本编辑器
+        fd.set('content', tinyMCE.activeEditor.getContent())
+            // 2. 调用方法
+            // article_edit: address + 'admin/article_edit', //文章编辑
+
+
+        $.ajax({
+            url: 'http://localhost:8000/admin/article_edit',
+            type: 'post',
+            data: fd,
+            processData: false, // 不要让jquery去处理formdata数据
+            contentType: false, // 不要使用默认的请求头
+            success: function(res) {
+
+                if (res.code === 200) {
+                    alert('修改成功')
+                    location.href = './article_list.html'
+                } else {
+                    alert(res.msg)
+                }
+            }
+        })
+
+    })
+</script>
+
+
+
+
+
+
 
 </html>

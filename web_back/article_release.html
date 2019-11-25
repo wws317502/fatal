@@ -68,7 +68,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="button" class="btn btn-success" id="btnAdd">发布</button>
-                        <button type="submit" class="btn btn-default">存为草稿</button>
+                        <button type="button" class="btn btn-default" id="btnAbb">存为草稿</button>
                     </div>
                 </div>
             </form>
@@ -102,19 +102,20 @@
         }
     })
     $('#coverImg').change(function() {
-            var file = this.files[0];
-            if (file) {
-                var url = URL.createObjectURL(file);
-                $('#previewImg').prop('src', url)
-            }
-        })
-        // 发布文章
-    $('#btnAdd').click(function() {
+        var file = this.files[0];
+        if (file) {
+            var url = URL.createObjectURL(file);
+            $('#previewImg').prop('src', url)
+        }
+    })
+
+
+    function ff(tt) {
         // 收集表单信息
         // var fd = new FormData( form dom节点)
         var fd = new FormData(document.getElementById('myform'));
         // 手动添加一个参数
-        fd.append('state', '已发布')
+        fd.append('state', tt)
             // 如果要获取富文本编辑中的内容，
             // 则需要调用它自己的api，而不能直接从textarea中取
             // fd.set(key,value); 会覆盖fd中的key
@@ -138,6 +139,15 @@
                 }
             }
         })
+
+    }
+    // 发布文章
+    $('#btnAdd').click(function() {
+        ff('已发布')
+    })
+
+    $('#btnAbb').click(function() {
+        ff('草稿')
     })
 </script>
 

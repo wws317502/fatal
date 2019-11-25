@@ -17,9 +17,11 @@ var management = {
     article_del: address + 'admin/article_delete', //删除文章
     article_add: address + 'admin/article_publish', //发布文章
     article_edit: address + 'admin/article_edit', //文章编辑
-    article_month_count: address + 'admin/month_article_count' // 获取月新增文章数量
+    article_month_count: address + 'admin/month_article_count', // 获取月新增文章数量
 
     //-------------------------------------------------------------
+    comment_add: address + 'post_comment',
+    comment_get: address + 'get_comments',
 
 
 
